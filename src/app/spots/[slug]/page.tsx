@@ -1,0 +1,57 @@
+/**
+ * WAVEO — detalhe de um spot.
+ *
+ * É o URL canónico de cada praia: pode ser partilhado, indexado e guardado nos
+ * favoritos. Renderiza exatamente o mesmo painel que a página inicial; a única
+ * diferença é que o seletor de spots mantém o utilizador dentro de `/spots/`.
+ */
+
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { SpotDashboard } from "@/components/dashboard/SpotDashboard";
+import { getAllSpotSummaries, getSpotForecast } from "@/lib/forecast";
+import { SPOTS, getSpotBySlug } from "@/lib/spots";
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const spot = getSpotBySlug(slug);
+  if (!spot) return { title: "Spot desconhecido" };
+
+  return {
+    title: `${spot.name} — previsão de surf`,
+    description: `${spot.characteristics.summary} Condições atuais e previsão hora a hora para ${spot.name}, ${spot.municipality}.`,
+  };
+}
+
+export default async function SpotPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
+  // Aqui, ao contrário da página inicial, um slug desconhecido é mesmo um 404:
+  // o URL afirma que aquele spot existe, e não existe.
+  if (!getSpotBySlug(slug)) notFound();
+
+  const nowEpochMs = Date.now();
+
+  const [forecast, all] = await Promise.all([
+    getSpotForecast(slug, nowEpochMs),
+    getAllSpotSummaries(nowEpochMs),
+  ]);
+
+  if (!forecast) notFound();
+
+  return (
+    <SpotDashboard
+      forecast={forecast}
+      nowEpochMs={nowEpochMs}
+      allSummaries={all.summaries}
+      spots={SPOTS}
+      linkMode="path"
+    />
+  );
+}
