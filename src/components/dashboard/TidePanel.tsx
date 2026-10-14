@@ -9,7 +9,7 @@
 
 import { IconArrowDown, IconArrowUp, IconTide } from "@/components/icons";
 import { Chip, cx } from "@/components/ui/Surface";
-import { tideStageLabel, formatDecimal } from "@/lib/format";
+import { tideStageLabel, tideExtremeLabel, formatDecimal } from "@/lib/format";
 import { formatPortugalTime } from "@/lib/time";
 import type { TideExtreme, TideState } from "@/lib/types";
 
@@ -59,7 +59,7 @@ export function TidePanel({
           </p>
         </div>
 
-        {/* Escala vertical: baixa-mar em baixo, preia-mar em cima. */}
+        {/* Escala vertical: maré baixa em baixo, maré alta em cima. */}
         {level !== null ? (
           <div className="flex items-center gap-2">
             <div className="relative h-24 w-3 overflow-hidden rounded-full border border-abyss-500/50 bg-abyss-800">
@@ -68,16 +68,16 @@ export function TidePanel({
                 style={{
                   height: `${Math.round(Math.min(1, Math.max(0, level)) * 100)}%`,
                   background:
-                    "linear-gradient(180deg, rgba(34,211,238,0.85), rgba(13,148,136,0.6))",
+                    "linear-gradient(180deg, rgba(47,178,201,0.95), rgba(20,144,122,0.75))",
                 }}
               />
               <div
-                className="absolute inset-x-[-3px] h-0.5 bg-mist-50"
+                className="absolute inset-x-[-3px] h-0.5 bg-mist-50 shadow-sm"
                 style={{ bottom: `${Math.round(Math.min(1, Math.max(0, level)) * 100)}%` }}
               />
             </div>
             <div className="flex h-24 flex-col justify-between text-[0.5625rem] tracking-wide text-mist-500 uppercase">
-              <span>preia</span>
+              <span>alta</span>
               <span>baixa</span>
             </div>
           </div>
@@ -86,12 +86,12 @@ export function TidePanel({
 
       <dl className="grid gap-2.5 sm:grid-cols-2">
         <ExtremeReading
-          label="Próxima preia-mar"
+          label="Próxima maré alta"
           extreme={tide.nextHigh}
           direction="up"
         />
         <ExtremeReading
-          label="Próxima baixa-mar"
+          label="Próxima maré baixa"
           extreme={tide.nextLow}
           direction="down"
         />
@@ -108,7 +108,7 @@ export function TidePanel({
       ) : null}
 
       <p className="rounded-xl border border-abyss-500/40 bg-abyss-800/30 px-3 py-2 text-[0.6875rem] leading-relaxed text-mist-500">
-        As horas de preia e baixa-mar são derivadas da série de nível do mar do
+        As horas de maré alta e maré baixa são derivadas da série de nível do mar do
         fornecedor, com deteção de extremos locais. Não provêm de um modelo
         astronómico dedicado e não devem ser usadas para navegação.
       </p>
@@ -155,7 +155,7 @@ function ExtremeReading({
       <dd className="mt-0.5 flex items-center gap-2 text-xs text-mist-400">
         <span className="font-mono tabular-nums">{formatDecimal(extreme.height)} m</span>
         <Chip variant={direction === "up" ? "tide" : "default"}>
-          {extreme.type}
+          {tideExtremeLabel(extreme.type)}
         </Chip>
       </dd>
     </div>

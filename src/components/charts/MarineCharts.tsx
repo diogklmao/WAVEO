@@ -23,13 +23,13 @@ import type { HourlyForecast, Range, SurfWindow, TideExtreme } from "@/lib/types
  * isso merece a única cor quente do sistema.
  */
 export const CHART_COLORS = {
-  wave: "#22d3ee",
-  swell: "#2dd4bf",
-  windWave: "#7d9cba",
-  period: "#a5b4fc",
-  wind: "#facc15",
-  gust: "#fb923c",
-  tide: "#67e8f9",
+  wave: "#0b7b92",
+  swell: "#0e7c63",
+  windWave: "#63879a",
+  period: "#6366f1",
+  wind: "#b45309",
+  gust: "#c2410c",
+  tide: "#0e8fa8",
 } as const;
 
 function toPoints(
@@ -257,7 +257,7 @@ export function TideChart({
 
   const annotations: ChartAnnotation[] = extremes.map((extreme) => ({
     epochMs: extreme.epochMs,
-    label: `${extreme.type === "cheia" ? "PM" : "BM"} ${formatPortugalTime(extreme.epochMs)}`,
+    label: `${extreme.type === "cheia" ? "MA" : "MB"} ${formatPortugalTime(extreme.epochMs)}`,
     tone: extreme.type === "cheia" ? "high" : "low",
   }));
 
@@ -270,7 +270,7 @@ export function TideChart({
       yUnit="m"
       yFormat="decimal"
       emptyMessage="O fornecedor não devolveu dados de nível do mar para este ponto. A maré aparece como indisponível em vez de estimada."
-      ariaLabel="Nível do mar ao longo do tempo, com preia-mar (PM) e baixa-mar (BM) assinaladas."
+      ariaLabel="Nível do mar ao longo do tempo, com maré alta (MA) e maré baixa (MB) assinaladas."
     />
   );
 }

@@ -32,7 +32,10 @@ export function piecewise(
   points: readonly CurvePoint[],
   options: PiecewiseOptions = {},
 ): number {
-  if (!Number.isFinite(x) || points.length === 0) return 0;
+  // `NaN` significa "sem valor" e devolve 0. `±Infinity` está fora do
+  // intervalo e cai nos extremos abaixo, tal como qualquer outro valor fora do
+  // domínio — a curva nunca extrapola.
+  if (Number.isNaN(x) || points.length === 0) return 0;
 
   const sorted = normalizePoints(points);
   const first = sorted[0]!;

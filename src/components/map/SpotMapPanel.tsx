@@ -112,7 +112,7 @@ export function SpotMapPanel({ summaries }: { summaries: SpotSummary[] }) {
                     <ScoreBadge score={score.value} band={score.band} showValue={false} />
                     <span
                       className="w-9 shrink-0 text-right font-mono text-sm font-semibold tabular-nums"
-                      style={{ color: score.band === "indisponivel" ? "#5b7793" : undefined }}
+                      style={{ color: score.band === "indisponivel" ? "#63879a" : undefined }}
                     >
                       {score.band === "indisponivel" ? "—" : formatScore(score.value)}
                     </span>

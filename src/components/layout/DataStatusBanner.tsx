@@ -6,9 +6,12 @@
  * falta informação. Por isso a hierarquia é deliberada — os dados de
  * demonstração têm o aviso mais forte da aplicação, e a indisponibilidade
  * parcial é dita por palavras em vez de ser deixada a um valor em branco.
+ *
+ * Visualmente é um cartão de vidro claro sobre a fotografia, com linhas de onda
+ * decorativas no canto e a pill "Dados em tempo real" no topo à direita.
  */
 
-import { IconAlert, IconCheck, IconInfo } from "@/components/icons";
+import { IconAlert, IconChart, IconInfo, IconWave } from "@/components/icons";
 import { cx } from "@/components/ui/Surface";
 import {
   formatDayMonth,
@@ -38,11 +41,31 @@ const PROVIDER_STATUS_LABEL: Record<ProviderStatus, string> = {
 };
 
 const PROVIDER_STATUS_TONE: Record<ProviderStatus, string> = {
-  ok: "text-signal-good",
-  parcial: "text-signal-fair",
-  erro: "text-signal-bad",
+  ok: "text-emerald-700",
+  parcial: "text-amber-700",
+  erro: "text-rose-700",
   desativado: "text-mist-500",
 };
+
+/** Linhas de onda decorativas, no canto direito do cartão. */
+function WaveLines() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 320 120"
+      className="pointer-events-none absolute inset-y-0 right-0 h-full w-64 opacity-60"
+      fill="none"
+      stroke="rgba(255,255,255,0.85)"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      preserveAspectRatio="none"
+    >
+      <path d="M-10 42 Q 60 18 130 42 T 270 42 T 340 38" />
+      <path d="M-10 62 Q 60 40 130 62 T 270 62 T 340 58" opacity="0.7" />
+      <path d="M-10 84 Q 60 64 130 84 T 270 84 T 340 80" opacity="0.45" />
+    </svg>
+  );
+}
 
 export function DataStatusBanner({
   source,
@@ -89,69 +112,80 @@ export function DataStatusBanner({
   }
 
   const hasIssues = source.stale || source.mode === "parcial" || source.unavailable.length > 0;
-  const failedProviders = source.providers.filter(
-    (provider) => provider.status === "erro" || provider.status === "parcial",
-  );
 
   return (
     <div
       className={cx(
-        "rounded-2xl border p-4",
-        hasIssues
-          ? "border-signal-fair/40 bg-signal-fair/8"
-          : "border-abyss-500/40 bg-abyss-800/40",
+        "surface relative overflow-hidden",
+        hasIssues && "border-signal-fair/45",
         className,
       )}
     >
-      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-        <div className="flex min-w-0 items-start gap-3">
-          <span
-            className={cx(
-              "mt-0.5 shrink-0",
-              hasIssues ? "text-signal-fair" : "text-signal-good",
-            )}
-          >
-            {hasIssues ? <IconInfo size={18} /> : <IconCheck size={18} />}
-          </span>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-mist-100">
-              {source.stale
-                ? "A mostrar os últimos dados obtidos com sucesso"
-                : hasIssues
-                  ? "Previsão obtida com dados incompletos"
-                  : "Previsão obtida a partir dos fornecedores"}
-            </p>
-            <p className="mt-1 text-xs leading-relaxed text-mist-400">
-              {source.stale
-                ? "O fornecedor não respondeu ao pedido mais recente. Estes valores podem já estar desatualizados."
-                : `Dados obtidos às ${formatPortugalTime(source.fetchedAtEpochMs)} (hora de Portugal).`}
-              {source.forecastStart && source.forecastEnd
-                ? ` Cobertura da previsão: ${formatCoveragePoint(source.forecastStart)} a ${formatCoveragePoint(source.forecastEnd)}.`
-                : ""}
-            </p>
+      <WaveLines />
 
-            {source.unavailable.length > 0 ? (
-              <p className="mt-2 text-xs leading-relaxed text-signal-fair">
-                Sem dados para: {source.unavailable.join(", ")}. Estes fatores
-                são excluídos da pontuação e o seu peso é redistribuído pelos
-                restantes — não contam como condições más.
+      <div className="relative">
+        {/* Linha de topo: título + pill de tempo real */}
+        <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
+          <div className="flex min-w-0 items-start gap-3">
+            <span
+              className={cx(
+                "mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg",
+                hasIssues
+                  ? "bg-amber-100/80 text-amber-700"
+                  : "bg-tide-500/25 text-tide-200",
+              )}
+            >
+              {hasIssues ? <IconInfo size={16} /> : <IconWave size={16} />}
+            </span>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-mist-50">
+                {source.stale
+                  ? "A mostrar os últimos dados obtidos com sucesso"
+                  : hasIssues
+                    ? "Previsão obtida com dados incompletos"
+                    : "Previsão obtida a partir dos fornecedores"}
               </p>
-            ) : null}
+              <p className="mt-1 text-xs leading-relaxed text-mist-300">
+                {source.stale
+                  ? "O fornecedor não respondeu ao pedido mais recente. Estes valores podem já estar desatualizados."
+                  : `Dados obtidos às ${formatPortugalTime(source.fetchedAtEpochMs)} (hora de Portugal).`}
+                {source.forecastStart && source.forecastEnd
+                  ? ` Cobertura da previsão: ${formatCoveragePoint(source.forecastStart)} a ${formatCoveragePoint(source.forecastEnd)}.`
+                  : ""}
+              </p>
 
-            {source.notes.length > 0 ? (
-              <ul className="mt-2 space-y-1 text-xs leading-relaxed text-mist-400">
-                {source.notes.map((note) => (
-                  <li key={note}>{note}</li>
-                ))}
-              </ul>
-            ) : null}
+              {source.unavailable.length > 0 ? (
+                <p className="mt-2 max-w-3xl text-xs leading-relaxed text-amber-800">
+                  Sem dados para: {source.unavailable.join(", ")}. Estes fatores
+                  são excluídos da pontuação e o seu peso é redistribuído pelos
+                  restantes — não contam como condições más.
+                </p>
+              ) : null}
+
+              {source.notes.length > 0 ? (
+                <ul className="mt-1.5 max-w-3xl space-y-1 text-xs leading-relaxed text-mist-400">
+                  {source.notes.map((note) => (
+                    <li key={note}>{note}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
           </div>
+
+          {!hasIssues ? (
+            <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/45 bg-white/45 px-3 py-1.5 text-xs font-semibold text-mist-200">
+              <span aria-hidden="true" className="size-2 rounded-full bg-emerald-500" />
+              Dados em tempo real
+              <IconChart size={14} className="text-tide-200" />
+            </span>
+          ) : null}
         </div>
 
-        <dl className="flex flex-wrap gap-x-6 gap-y-2 text-xs">
+        {/* Linha inferior: fornecedores */}
+        <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-2 border-t border-white/25 pt-3 text-xs">
           {source.providers.map((provider) => (
             <div key={provider.id} className="min-w-0">
-              <dt className="font-semibold text-mist-200">{provider.name}</dt>
+              <dt className="font-semibold text-mist-100">{provider.name}</dt>
               <dd className={cx("mt-0.5", PROVIDER_STATUS_TONE[provider.status])}>
                 {PROVIDER_STATUS_LABEL[provider.status]}
                 {provider.durationMs !== undefined
@@ -180,11 +214,11 @@ export function MethodologyNotice({ className }: { className?: string }) {
   return (
     <p
       className={cx(
-        "rounded-xl border border-abyss-500/40 bg-abyss-800/30 px-3 py-2 text-xs leading-relaxed text-mist-500",
+        "surface-raised px-4 py-3 text-xs leading-relaxed text-mist-400",
         className,
       )}
     >
-      <strong className="font-semibold text-mist-400">Metodologia provisória.</strong>{" "}
+      <strong className="font-semibold text-mist-200">Metodologia provisória.</strong>{" "}
       A pontuação combina altura de onda, período, direção do swell, vento e
       maré com pesos que ainda não foram validados no terreno. Os pesos e os
       limites de cada spot são configuráveis e podem mudar.

@@ -286,7 +286,7 @@ export function AreaChart({
                 y={PADDING.top}
                 width={Math.max(0, xForFraction(Math.min(1, nowFraction)) - PADDING.left)}
                 height={plotHeight}
-                fill="rgba(2, 8, 18, 0.45)"
+                fill="rgba(253, 247, 236, 0.5)"
               />
             ) : null}
 
@@ -303,7 +303,7 @@ export function AreaChart({
                         y={yTop}
                         width={plotWidth}
                         height={Math.max(1, yBottom - yTop)}
-                        fill={band.color ?? "rgba(45, 212, 191, 0.10)"}
+                        fill={band.color ?? "rgba(20, 144, 122, 0.12)"}
                       />
                       {band.label ? (
                         <text
@@ -336,8 +336,8 @@ export function AreaChart({
                         y={PADDING.top}
                         width={Math.max(2, x2 - x1)}
                         height={plotHeight}
-                        fill="rgba(34, 211, 238, 0.13)"
-                        stroke="rgba(34, 211, 238, 0.4)"
+                        fill="rgba(47, 178, 201, 0.16)"
+                        stroke="rgba(14, 143, 168, 0.5)"
                         strokeWidth={1}
                         rx={4}
                       />
@@ -379,7 +379,7 @@ export function AreaChart({
                     y1={y}
                     x2={PADDING.left + plotWidth}
                     y2={y}
-                    stroke="rgba(56, 100, 138, 0.28)"
+                    stroke="rgba(78, 116, 136, 0.22)"
                     strokeWidth={1}
                   />
                   <text
@@ -407,7 +407,7 @@ export function AreaChart({
                     y1={PADDING.top}
                     x2={x}
                     y2={PADDING.top + plotHeight}
-                    stroke="rgba(56, 100, 138, 0.4)"
+                    stroke="rgba(78, 116, 136, 0.35)"
                     strokeWidth={1}
                     strokeDasharray="3 4"
                   />
@@ -479,7 +479,7 @@ export function AreaChart({
                         cx={x}
                         cy={y}
                         r={3}
-                        fill={isHigh ? "#67e8f9" : "#7d9cba"}
+                        fill={isHigh ? "#0e8fa8" : "#86a4b4"}
                       />
                       <text
                         x={x}
@@ -514,7 +514,7 @@ export function AreaChart({
                       <path
                         d="M0 5 L0 -5 M-2.4 -2.2 L0 -5 L2.4 -2.2"
                         fill="none"
-                        stroke={marker.color ?? "rgba(250, 204, 21, 0.9)"}
+                        stroke={marker.color ?? "rgba(217, 119, 6, 0.9)"}
                         strokeWidth={1.3}
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -532,7 +532,7 @@ export function AreaChart({
                   y1={PADDING.top - 4}
                   x2={xForFraction(nowFraction)}
                   y2={PADDING.top + plotHeight}
-                  stroke="rgba(226, 240, 255, 0.75)"
+                  stroke="rgba(16, 47, 66, 0.7)"
                   strokeWidth={1.5}
                 />
                 <text
@@ -573,7 +573,7 @@ export function AreaChart({
                   y1={PADDING.top}
                   x2={xForIndex(hoverIndex)}
                   y2={PADDING.top + plotHeight}
-                  stroke="rgba(226, 240, 255, 0.5)"
+                  stroke="rgba(16, 47, 66, 0.4)"
                   strokeWidth={1}
                 />
                 {series.map((item) => {
@@ -586,7 +586,7 @@ export function AreaChart({
                       cy={yScale(value)}
                       r={3.5}
                       fill={item.color}
-                      stroke="#03121f"
+                      stroke="#fffdf8"
                       strokeWidth={1.5}
                     />
                   );

@@ -12,7 +12,21 @@ import { SpotDashboard } from "@/components/dashboard/SpotDashboard";
 import { getAllSpotSummaries, getSpotForecast } from "@/lib/forecast";
 import { SPOTS, getSpotBySlug } from "@/lib/spots";
 
-export const dynamic = "force-dynamic";
+// Reavaliação por pedido: os dados nunca ficam congelados na compilação.
+export const revalidate = 0;
+
+// Slugs conhecidos. Com `dynamicParams = false`, um slug fora desta lista é
+// rejeitado ao nível do router — antes de qualquer renderização — e a resposta
+// sai mesmo com estado 404. Sem isto, o `notFound()` seria lançado depois de o
+// streaming começar (as páginas do grupo `(shell)` têm uma `loading.tsx` que
+// abre uma fronteira Suspense; esta rota fica deliberadamente fora desse grupo)
+// e o estado HTTP ficaria em 200. Nota: `force-dynamic` faria o router ignorar
+// a lista de parâmetros — daí `revalidate = 0` em seu lugar.
+export const dynamicParams = false;
+
+export function generateStaticParams(): { slug: string }[] {
+  return SPOTS.map((spot) => ({ slug: spot.slug }));
+}
 
 export async function generateMetadata({
   params,
@@ -21,7 +35,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const spot = getSpotBySlug(slug);
-  if (!spot) return { title: "Spot desconhecido" };
+  // O 404 é lançado já aqui — e não só no corpo da página — para que a
+  // resposta seja emitida com o estado HTTP correto.
+  if (!spot) notFound();
 
   return {
     title: `${spot.name} — previsão de surf`,

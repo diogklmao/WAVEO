@@ -162,7 +162,7 @@ function FactorRow({
               <span
                 className="font-mono font-semibold tabular-nums"
                 style={{
-                  color: part.score === null ? "#5b7793" : scoreColor(part.score),
+                  color: part.score === null ? "#63879a" : scoreColor(part.score),
                 }}
               >
                 {part.score === null ? "—" : formatScore(part.score)}

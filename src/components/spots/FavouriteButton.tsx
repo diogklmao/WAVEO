@@ -10,7 +10,7 @@
  */
 
 import { useFavourites } from "@/hooks/useFavourites";
-import { IconHeart } from "@/components/icons";
+import { IconBookmark } from "@/components/icons";
 import { cx } from "@/components/ui/Surface";
 
 export function FavouriteButton({
@@ -39,21 +39,26 @@ export function FavouriteButton({
       aria-label={label}
       title={label}
       className={cx(
-        "inline-flex items-center gap-2 rounded-lg border transition-colors",
-        variant === "icon" ? "size-9 justify-center" : "px-3 py-2 text-sm font-medium",
-        active
-          ? "border-signal-bad/45 bg-signal-bad/12 text-signal-bad hover:bg-signal-bad/20"
-          : "border-abyss-500/50 bg-abyss-800/50 text-mist-400 hover:border-abyss-400/70 hover:text-mist-100",
+        "inline-flex items-center gap-2 rounded-full border transition-colors",
+        variant === "icon" ? "size-9 justify-center" : "px-4 py-2.5 text-sm font-medium",
+        variant === "labelled"
+          ? cx(
+              "border-white/50 bg-white/55 text-mist-200 backdrop-blur-md hover:bg-white/70",
+              active && "border-rose-300/60 bg-rose-50 text-rose-700 hover:bg-rose-100",
+            )
+          : active
+            ? "border-signal-bad/45 bg-signal-bad/12 text-signal-bad hover:bg-signal-bad/20"
+            : "border-abyss-500/50 bg-abyss-800/50 text-mist-400 hover:border-abyss-400/70 hover:text-mist-100",
         className,
       )}
     >
-      <IconHeart
+      <IconBookmark
         size={variant === "icon" ? 18 : 16}
         filled={active}
         className={cx("transition-transform", active && "scale-110")}
       />
       {variant === "labelled" ? (
-        <span>{active ? "Nos favoritos" : "Guardar"}</span>
+        <span>{active ? "Guardado" : "Guardar spot"}</span>
       ) : null}
     </button>
   );

@@ -50,18 +50,30 @@ export function SectionHeader({
   title,
   description,
   action,
+  icon,
   className,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   action?: ReactNode;
+  /** Ícone em ladrilho, à esquerda da sobrancelha. */
+  icon?: ReactNode;
   className?: string;
 }) {
   return (
     <div className={cx("flex flex-wrap items-end justify-between gap-4", className)}>
       <div className="min-w-0">
-        {eyebrow ? <p className="label-eyebrow mb-1.5">{eyebrow}</p> : null}
+        {eyebrow ? (
+          <p className="label-eyebrow mb-1.5 flex items-center gap-2">
+            {icon ? (
+              <span className="grid size-7 place-items-center rounded-lg border border-abyss-500/50 bg-abyss-800/60 text-tide-300">
+                {icon}
+              </span>
+            ) : null}
+            {eyebrow}
+          </p>
+        ) : null}
         <h2 className="font-display text-lg font-semibold tracking-tight text-mist-50 sm:text-xl">
           {title}
         </h2>

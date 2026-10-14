@@ -1,37 +1,30 @@
 /**
  * WAVEO — condições atuais.
  *
- * Combina a bússola com um mosaico de leituras. A ordem não é arbitrária:
- * começa no que determina se há ondas (altura, período), passa pelo que
- * determina se estão surfáveis (vento), e termina no que determina o conforto
- * (temperaturas, tempo). Cada valor em falta é apresentado como "—" com a
- * razão à vista, nunca como zero.
+ * Combina a bússola com um mosaico de seis leituras, na ordem em que se decide
+ * se vale a pena ir: o que determina se há ondas (altura, período), o que
+ * determina se estão surfáveis (vento, rajadas) e o que determina o conforto
+ * (temperaturas). Cada valor em falta é apresentado como "—" com a razão à
+ * vista, nunca como zero.
  */
 
 import { CompassDial } from "@/components/ui/CompassDial";
 import { StatTile } from "@/components/ui/StatTile";
-import { weatherIconComponent } from "@/components/icons";
 import {
   IconDroplet,
   IconGauge,
   IconThermometer,
-  IconTide,
   IconWave,
   IconWind,
 } from "@/components/icons";
 import {
   formatCelsius,
-  formatDecimal,
-  formatFractionAsPercent,
   formatKmh,
   formatMeters,
   formatSeconds,
-  tideStageLabel,
-  weatherCodeLabel,
-  weatherIcon,
 } from "@/lib/format";
 import { classifyWind, windRelationLabel } from "@/lib/geo";
-import type { HourlyForecast, SurfSpot, TideState } from "@/lib/types";
+import type { HourlyForecast, SurfSpot } from "@/lib/types";
 
 /**
  * Abaixo desta fração da tolerância do spot o mar está praticamente liso, seja
@@ -44,11 +37,9 @@ const LIGHT_WIND_FRACTION = 0.3;
 export function CurrentConditions({
   spot,
   current,
-  tide,
 }: {
   spot: SurfSpot;
   current: HourlyForecast | null;
-  tide: TideState;
 }) {
   if (!current) {
     return (
@@ -89,12 +80,18 @@ export function CurrentConditions({
       ? "direção indisponível"
       : `${lightWind ? "vento fraco, " : ""}${windRelationLabel(windRelation)} · limite ${characteristics.windTolerance} km/h`;
 
-  const WeatherIcon = weatherIconComponent(weatherIcon(current.weatherCode, current.isDay));
-
   const period = current.swellPeriod ?? current.wavePeriod;
 
+  const periodTone: "neutral" | "good" | "fair" =
+    period === null
+      ? "neutral"
+      : period >= characteristics.idealPeriod.min &&
+          period <= characteristics.idealPeriod.max
+        ? "good"
+        : "fair";
+
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:items-start">
+    <div className="grid gap-6 lg:grid-cols-[14.5rem_minmax(0,1fr)] lg:items-start">
       <CompassDial
         swellDirection={current.swellDirection ?? current.waveDirection}
         swellPeriod={current.swellPeriod}
@@ -104,37 +101,43 @@ export function CurrentConditions({
         windGusts={current.windGust}
         beachOrientation={characteristics.beachOrientation}
         swellWindow={characteristics.swellWindow}
+        size={232}
       />
 
       <div className="grid grid-cols-2 gap-3 xl:grid-cols-3">
         <StatTile
           icon={<IconWave size={14} />}
-          label="Altura de onda"
+          label="Altura de ondas"
           value={current.waveHeight === null ? "—" : formatMeters(current.waveHeight).replace(" m", "")}
           unit="m"
           unavailable={current.waveHeight === null}
           sub={
             current.swellHeight === null
               ? "componente de swell indisponível"
-              : `swell ${formatMeters(current.swellHeight)}`
+              : `Swell ${formatMeters(current.swellHeight)}`
           }
         />
 
         <StatTile
           icon={<IconGauge size={14} />}
-          label="Período de pico"
+          label="Período de picos"
           value={period === null ? "—" : formatSeconds(period).replace(" s", "")}
           unit="s"
           unavailable={period === null}
-          tone={
-            period === null
-              ? "neutral"
-              : period >= characteristics.idealPeriod.min &&
-                  period <= characteristics.idealPeriod.max
-                ? "good"
-                : "fair"
+          tone={periodTone}
+          sub={
+            <span
+              className={
+                periodTone === "good"
+                  ? "text-signal-good"
+                  : periodTone === "fair"
+                    ? "text-signal-fair"
+                    : "text-mist-500"
+              }
+            >
+              preferido {characteristics.idealPeriod.min}–{characteristics.idealPeriod.max} s
+            </span>
           }
-          sub={`preferido ${characteristics.idealPeriod.min}–${characteristics.idealPeriod.max} s`}
         />
 
         <StatTile
@@ -163,19 +166,6 @@ export function CurrentConditions({
         />
 
         <StatTile
-          icon={<IconDroplet size={14} />}
-          label="Temperatura da água"
-          value={
-            current.seaSurfaceTemperature === null
-              ? "—"
-              : formatCelsius(current.seaSurfaceTemperature).replace(" °C", "")
-          }
-          unit="°C"
-          unavailable={current.seaSurfaceTemperature === null}
-          sub="temperatura à superfície"
-        />
-
-        <StatTile
           icon={<IconThermometer size={14} />}
           label="Temperatura do ar"
           value={
@@ -185,64 +175,20 @@ export function CurrentConditions({
           }
           unit="°C"
           unavailable={current.airTemperature === null}
-          sub={
-            <span className="flex items-center gap-1.5">
-              <WeatherIcon size={14} className="shrink-0 text-mist-400" />
-              <span className="truncate">{weatherCodeLabel(current.weatherCode)}</span>
-            </span>
-          }
+          sub="temperatura à superfície"
         />
 
         <StatTile
-          icon={<IconTide size={14} />}
-          label="Maré"
-          value={tide.available && tide.height !== null ? formatDecimal(tide.height) : "—"}
-          unit="m"
-          unavailable={!tide.available || tide.height === null}
-          sub={
-            tide.available
-              ? `maré ${tideStageLabel(tide.stage)}${
-                  tide.normalizedLevel === null
-                    ? ""
-                    : ` · ${Math.round(tide.normalizedLevel * 100)} % do intervalo`
-                }`
-              : "fornecedor sem dados de maré"
-          }
-        />
-
-        <StatTile
-          icon={<IconWave size={14} />}
-          label="Energia de swell"
+          icon={<IconDroplet size={14} />}
+          label="Temperatura da água"
           value={
-            current.swellEnergyShare === null
+            current.seaSurfaceTemperature === null
               ? "—"
-              : formatFractionAsPercent(current.swellEnergyShare).replace(" %", "")
+              : formatCelsius(current.seaSurfaceTemperature).replace(" °C", "")
           }
-          unit="%"
-          unavailable={current.swellEnergyShare === null}
-          tone={
-            current.swellEnergyShare === null
-              ? "neutral"
-              : current.swellEnergyShare >= 0.7
-                ? "good"
-                : current.swellEnergyShare >= 0.45
-                  ? "fair"
-                  : "warning"
-          }
-          sub="proporção de swell face a onda de vento"
-        />
-
-        <StatTile
-          icon={<IconGauge size={14} />}
-          label="Onda de vento"
-          value={
-            current.windWaveHeight === null
-              ? "—"
-              : formatMeters(current.windWaveHeight).replace(" m", "")
-          }
-          unit="m"
-          unavailable={current.windWaveHeight === null}
-          sub="mar gerado localmente pelo vento"
+          unit="°C"
+          unavailable={current.seaSurfaceTemperature === null}
+          sub="Maioritariamente estável nas próximas horas"
         />
       </div>
     </div>

@@ -6,6 +6,7 @@
  * em toda a aplicação.
  */
 
+import { IconWave } from "@/components/icons";
 import { formatScore, scoreBandHint, scoreBandLabel, scoreColor } from "@/lib/format";
 import type { ScoreBand } from "@/lib/types";
 
@@ -52,7 +53,7 @@ export function ScoreDial({
         >
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor={colour} stopOpacity="0.65" />
+              <stop offset="0%" stopColor="#2fb2c9" />
               <stop offset="100%" stopColor={colour} />
             </linearGradient>
           </defs>
@@ -63,7 +64,7 @@ export function ScoreDial({
             cy={centre}
             r={radius}
             fill="none"
-            stroke="rgba(23, 53, 83, 0.75)"
+            stroke="rgba(58, 98, 118, 0.18)"
             strokeWidth={thickness}
           />
 
@@ -89,8 +90,11 @@ export function ScoreDial({
 
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
-            className="font-display text-[2.75rem] leading-none font-semibold tracking-tight tabular-nums"
-            style={{ color: unavailable ? "#64748b" : colour }}
+            className="font-display leading-none font-semibold tracking-tight tabular-nums"
+            style={{
+              fontSize: size * 0.255,
+              color: unavailable ? "#64748b" : "#102f42",
+            }}
           >
             {unavailable ? "—" : formatScore(score)}
           </span>
@@ -101,14 +105,15 @@ export function ScoreDial({
       </div>
 
       {showLabel ? (
-        <div className="text-center">
+        <div className="flex flex-col items-center gap-1.5 text-center">
           <p
-            className="font-display text-base font-semibold tracking-tight"
-            style={{ color: unavailable ? "#7d9cba" : colour }}
+            className="flex items-center gap-1.5 font-display text-lg font-semibold tracking-tight"
+            style={{ color: unavailable ? "#4e7488" : colour }}
           >
+            <IconWave size={17} />
             {scoreBandLabel(band)}
           </p>
-          <p className="mt-1 max-w-[22rem] text-xs leading-relaxed text-mist-400">
+          <p className="max-w-[22rem] text-xs leading-relaxed text-mist-400">
             {scoreBandHint(band)}
           </p>
         </div>
@@ -129,13 +134,13 @@ export function ConfidenceMeter({ confidence }: { confidence: number }) {
     pct >= 80 ? "text-signal-good" : pct >= 55 ? "text-signal-fair" : "text-signal-marginal";
 
   return (
-    <div className="w-full max-w-[13rem]">
+    <div className="w-full">
       <div className="flex items-center justify-between text-[0.6875rem] font-semibold tracking-wide uppercase">
         <span className="text-mist-500">Confiança dos dados</span>
         <span className={`tabular-nums ${tone}`}>{pct}%</span>
       </div>
       <div
-        className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-abyss-700/80"
+        className="mt-2 h-2 w-full overflow-hidden rounded-full bg-abyss-700/80"
         role="meter"
         aria-valuenow={pct}
         aria-valuemin={0}
@@ -146,7 +151,7 @@ export function ConfidenceMeter({ confidence }: { confidence: number }) {
           className="h-full rounded-full transition-[width] duration-500"
           style={{
             width: `${pct}%`,
-            background: "linear-gradient(90deg, rgba(34,211,238,0.55), rgba(45,212,191,0.95))",
+            background: "linear-gradient(90deg, #2fb2c9, #14907a)",
           }}
         />
       </div>

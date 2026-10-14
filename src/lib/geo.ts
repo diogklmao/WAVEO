@@ -64,7 +64,9 @@ export function angularDistance(a: number, b: number): number {
  */
 export function signedAngularDistance(a: number, b: number): number {
   const diff = ((normalizeDegrees(a) - normalizeDegrees(b) + 540) % 360) - 180;
-  return diff;
+  // O caso oposto é ambíguo (tanto faz ir por um lado como pelo outro) e
+  // resolve-se sempre como +180, para que o intervalo seja (-180, 180].
+  return diff === -180 ? 180 : diff;
 }
 
 /** Abreviatura do ponto cardeal em PT-PT (ex.: 292,5° -> "ONO"). */

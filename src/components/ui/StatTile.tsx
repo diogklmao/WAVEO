@@ -30,22 +30,23 @@ export function StatTile({
   className?: string;
 }) {
   const toneClass = {
-    neutral: "text-mist-50",
-    good: "text-signal-good",
-    fair: "text-signal-fair",
-    warning: "text-signal-marginal",
-    bad: "text-signal-bad",
+    neutral: "text-white",
+    good: "text-emerald-300",
+    fair: "text-lime-300",
+    warning: "text-amber-300",
+    bad: "text-rose-300",
   }[tone];
 
   return (
     <div
       className={cx(
-        "rounded-[var(--radius-tile)] border border-abyss-500/40 bg-abyss-800/40 p-3.5",
+        "rounded-[var(--radius-tile)] border border-white/18 p-3.5",
+        "bg-[linear-gradient(160deg,rgba(20,32,60,0.62),rgba(12,22,44,0.68))] backdrop-blur-md",
         className,
       )}
     >
-      <div className="flex items-center gap-1.5 text-[0.625rem] font-semibold tracking-[0.1em] text-mist-500 uppercase">
-        {icon ? <span className="shrink-0">{icon}</span> : null}
+      <div className="flex items-center gap-1.5 text-[0.625rem] font-semibold tracking-[0.1em] text-white/65 uppercase">
+        {icon ? <span className="shrink-0 text-tide-600">{icon}</span> : null}
         <span className="truncate">{label}</span>
       </div>
 
@@ -53,18 +54,18 @@ export function StatTile({
         <span
           className={cx(
             "font-display text-xl leading-none font-semibold tabular-nums",
-            unavailable ? "text-mist-500" : toneClass,
+            unavailable ? "text-white/50" : toneClass,
           )}
         >
           {value}
         </span>
         {unit && !unavailable ? (
-          <span className="text-xs font-medium text-mist-500">{unit}</span>
+          <span className="text-xs font-medium text-white/65">{unit}</span>
         ) : null}
       </div>
 
       {sub ? (
-        <div className="mt-1.5 text-[0.6875rem] leading-snug text-mist-500">{sub}</div>
+        <div className="mt-1.5 text-[0.6875rem] leading-snug text-white/65">{sub}</div>
       ) : null}
     </div>
   );

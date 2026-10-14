@@ -9,11 +9,13 @@
  *
  * Convenção: a direção indica sempre DE ONDE vem o swell ou o vento. A seta
  * aponta no sentido do movimento (para dentro), e a etiqueta junto ao rebordo
- * indica a origem. Norte em cima, como em qualquer carta náutica.
+ * indica a origem. Norte em cima, como em qualquer carta náutica. Os valores
+ * numéricos vivem no mosaico de estatísticas ao lado — aqui fica só a
+ * geometria das direções.
  */
 
 import { angularDistance, compassAbbreviation, compassName } from "@/lib/geo";
-import { formatDirection, formatKmh, formatMeters, formatSeconds } from "@/lib/format";
+import { formatKmh, formatMeters, formatSeconds } from "@/lib/format";
 
 const CARDINALS = [
   { angle: 0, label: "N" },
@@ -67,7 +69,7 @@ export function CompassDial({
   windGusts,
   beachOrientation,
   swellWindow,
-  size = 268,
+  size = 232,
 }: CompassDialProps) {
   const cx = size / 2;
   const cy = size / 2;
@@ -95,7 +97,7 @@ export function CompassDial({
   const windTail = windDirection === null ? null : polar(cx, cy, inner + 6, windDirection);
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center">
       <svg
         width={size}
         height={size}
@@ -107,6 +109,7 @@ export function CompassDial({
           waveHeight,
           windDirection,
           windSpeed,
+          windGusts,
           swellWindow,
           inWindow,
         })}
@@ -118,8 +121,8 @@ export function CompassDial({
             <stop offset="100%" stopColor="rgba(3, 12, 24, 0.95)" />
           </radialGradient>
           <linearGradient id="waveo-compass-wedge" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(34, 211, 238, 0.30)" />
-            <stop offset="100%" stopColor="rgba(20, 184, 166, 0.14)" />
+            <stop offset="0%" stopColor="rgba(47, 178, 201, 0.32)" />
+            <stop offset="100%" stopColor="rgba(20, 144, 122, 0.16)" />
           </linearGradient>
         </defs>
 
@@ -179,7 +182,7 @@ export function CompassDial({
               y={pos.y}
               textAnchor="middle"
               dominantBaseline="central"
-              className="fill-mist-400 font-mono text-[0.6875rem] font-semibold"
+              className="fill-white/80 font-mono text-[0.6875rem] font-semibold"
             >
               {label}
             </text>
@@ -229,56 +232,12 @@ export function CompassDial({
             y={polar(cx, cy, outer + 1, swellDirection).y}
             textAnchor="middle"
             dominantBaseline="central"
-            className="fill-tide-200 font-mono text-[0.625rem] font-semibold"
+            className="fill-tide-100 font-mono text-[0.625rem] font-semibold"
           >
             {compassAbbreviation(swellDirection)}
           </text>
         ) : null}
       </svg>
-
-      <dl className="grid w-full grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3">
-        <CompassReading
-          label="Swell"
-          value={
-            swellDirection === null ? null : `${compassAbbreviation(swellDirection)} · ${compassName(swellDirection)}`
-          }
-          detail={
-            swellOffset === null
-              ? "Direção indisponível"
-              : inWindow
-                ? `Dentro da janela ideal (${compassAbbreviation(swellWindow.center)} ±${swellWindow.halfWidth}°)`
-                : `A ${Math.round(swellOffset)}° do centro da janela (${compassAbbreviation(swellWindow.center)})`
-          }
-          tone={swellOffset === null ? "muted" : inWindow ? "good" : "fair"}
-          accent="#22d3ee"
-        />
-        <CompassReading
-          label="Altura · Período"
-          value={describeSwellSize(waveHeight, swellPeriod)}
-          detail="Altura significativa e período de pico"
-          tone="neutral"
-          accent="rgba(160, 196, 226, 0.85)"
-        />
-        <CompassReading
-          label="Vento"
-          value={
-            windDirection === null
-              ? null
-              : `${compassAbbreviation(windDirection)} · ${formatKmh(windSpeed)}${
-                  windGusts !== null && windGusts !== undefined ? ` (raj. ${formatKmh(windGusts)})` : ""
-                }`
-          }
-          detail={
-            windSpeed === null
-              ? "Intensidade indisponível"
-              : windDirection === null
-                ? "Direção indisponível"
-                : `Vento de ${compassName(windDirection)} · ${formatDirection(windDirection)}`
-          }
-          tone="neutral"
-          accent="rgba(250, 204, 21, 0.85)"
-        />
-      </dl>
     </div>
   );
 }
@@ -293,52 +252,13 @@ function describeSwellSize(
   return `${formatMeters(waveHeight)} · ${formatSeconds(swellPeriod)}`;
 }
 
-function CompassReading({
-  label,
-  value,
-  detail,
-  tone,
-  accent,
-}: {
-  label: string;
-  value: string | null;
-  detail: string;
-  tone: "good" | "fair" | "muted" | "neutral";
-  accent: string;
-}) {
-  const valueTone =
-    tone === "muted" || value === null
-      ? "text-mist-500"
-      : tone === "good"
-        ? "text-signal-good"
-        : tone === "fair"
-          ? "text-signal-fair"
-          : "text-mist-50";
-
-  return (
-    <div className="min-w-0">
-      <dt className="flex items-center gap-1.5 text-[0.6875rem] font-semibold tracking-[0.1em] text-mist-500 uppercase">
-        <span
-          aria-hidden="true"
-          className="size-1.5 shrink-0 rounded-full"
-          style={{ backgroundColor: accent }}
-        />
-        {label}
-      </dt>
-      <dd className={`mt-1 font-mono text-sm font-semibold tabular-nums ${valueTone}`}>
-        {value ?? "—"}
-      </dd>
-      <dd className="mt-0.5 text-[0.6875rem] leading-snug text-mist-500">{detail}</dd>
-    </div>
-  );
-}
-
 function describeCompass({
   swellDirection,
   swellPeriod,
   waveHeight,
   windDirection,
   windSpeed,
+  windGusts,
   swellWindow,
   inWindow,
 }: {
@@ -347,6 +267,7 @@ function describeCompass({
   waveHeight: number | null;
   windDirection: number | null;
   windSpeed: number | null;
+  windGusts?: number | null;
   swellWindow: { center: number; halfWidth: number };
   inWindow: boolean;
 }): string {
@@ -364,7 +285,11 @@ function describeCompass({
   parts.push(
     windDirection === null
       ? "Direção do vento indisponível."
-      : `Vento de ${compassName(windDirection)} a ${formatKmh(windSpeed)}.`,
+      : `Vento de ${compassName(windDirection)} a ${formatKmh(windSpeed)}${
+          windGusts !== null && windGusts !== undefined
+            ? `, com rajadas de ${formatKmh(windGusts)}`
+            : ""
+        }.`,
   );
   return parts.join(" ");
 }

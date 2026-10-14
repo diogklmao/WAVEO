@@ -47,7 +47,7 @@ export function HourlyStrip({
       aria-label={`${label}: ${entries.length} horas de previsão`}
     >
       {entries.map((entry, index) => {
-        const previous = index > 0 ? entries[index - 1] : null;
+        const previous = index > 0 ? (entries[index - 1] ?? null) : null;
         const startsNewDay =
           previous === null ||
           portugalDayKey(previous.hour.epochMs) !== portugalDayKey(entry.hour.epochMs);

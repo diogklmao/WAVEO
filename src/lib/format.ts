@@ -6,7 +6,7 @@
  */
 
 import { compassAbbreviation, compassName } from "./geo";
-import type { ScoreBand, SurferLevel, TideStage } from "./types";
+import type { ScoreBand, SurferLevel, TideExtreme, TideStage } from "./types";
 
 const PT_NUMBER = new Intl.NumberFormat("pt-PT", {
   maximumFractionDigits: 1,
@@ -185,6 +185,16 @@ export function tideStageLabel(stage: TideStage | "estagnada" | null): string {
   return TIDE_STAGE_LABELS[stage] ?? "—";
 }
 
+const TIDE_EXTREME_LABELS: Record<TideExtreme["type"], string> = {
+  cheia: "Maré alta",
+  baixa: "Maré baixa",
+};
+
+/** Etiqueta de um extremo de maré para a interface ("cheia" → "Maré alta"). */
+export function tideExtremeLabel(type: TideExtreme["type"]): string {
+  return TIDE_EXTREME_LABELS[type];
+}
+
 const BREAK_TYPE_LABELS: Record<string, string> = {
   beach: "Beach break",
   point: "Point break",
@@ -288,12 +298,12 @@ export function scoreColor(score: number | null | undefined): string {
     return "#64748b";
   }
   const stops: { at: number; color: [number, number, number] }[] = [
-    { at: 0, color: [244, 63, 94] }, // rosa
-    { at: 2.5, color: [251, 146, 60] }, // laranja
-    { at: 4.5, color: [251, 191, 36] }, // âmbar
-    { at: 6.5, color: [163, 230, 53] }, // lima
-    { at: 8, color: [52, 211, 153] }, // esmeralda
-    { at: 10, color: [34, 211, 238] }, // ciano
+    { at: 0, color: [225, 29, 72] }, // rosa
+    { at: 2.5, color: [234, 88, 12] }, // laranja
+    { at: 4.5, color: [217, 119, 6] }, // âmbar
+    { at: 6.5, color: [101, 163, 13] }, // lima
+    { at: 8, color: [13, 148, 136] }, // verde-mar
+    { at: 10, color: [14, 116, 144] }, // azul-mar
   ];
   const clamped = Math.min(10, Math.max(0, score));
   for (let i = 1; i < stops.length; i += 1) {
@@ -308,7 +318,7 @@ export function scoreColor(score: number | null | undefined): string {
       return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
     }
   }
-  return "#22d3ee";
+  return "#0e7490";
 }
 
 /** Degradê CSS correspondente à escala de pontuação. */

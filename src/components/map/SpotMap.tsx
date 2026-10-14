@@ -37,12 +37,12 @@ export interface SpotMapPoint {
 const BASEMAP_STYLE: maplibregl.StyleSpecification = {
   version: 8,
   sources: {
-    "carto-dark": {
+    "carto-light": {
       type: "raster",
       tiles: [
-        "https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
-        "https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
-        "https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+        "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png",
+        "https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png",
+        "https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png",
       ],
       tileSize: 256,
       maxzoom: 20,
@@ -54,13 +54,13 @@ const BASEMAP_STYLE: maplibregl.StyleSpecification = {
     {
       id: "background",
       type: "background",
-      paint: { "background-color": "#040b18" },
+      paint: { "background-color": "#e9e0cc" },
     },
     {
-      id: "carto-dark",
+      id: "carto-light",
       type: "raster",
-      source: "carto-dark",
-      paint: { "raster-opacity": 0.9 },
+      source: "carto-light",
+      paint: { "raster-opacity": 0.95 },
     },
   ],
 };

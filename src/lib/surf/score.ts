@@ -462,14 +462,14 @@ function buildTideFactor(
 
   let detail: string;
   if (excess === 0) {
-    detail = `A maré está dentro da faixa preferida deste spot (${formatPercent(bandLow * 100)}–${formatPercent(bandHigh * 100)} entre a baixa-mar e a preia-mar).`;
+    detail = `A maré está dentro da faixa preferida deste spot (${formatPercent(bandLow * 100)}–${formatPercent(bandHigh * 100)} entre a maré baixa e a maré alta).`;
   } else if (level < bandLow) {
     detail = `A maré está abaixo da faixa preferida deste spot (${formatPercent(bandLow * 100)}–${formatPercent(bandHigh * 100)}). Com pouca água, a onda pode fechar ou quebrar demasiado perto do fundo.`;
   } else {
     detail = `A maré está acima da faixa preferida deste spot (${formatPercent(bandLow * 100)}–${formatPercent(bandHigh * 100)}). Com muita água, a onda perde definição.`;
   }
 
-  if (stageApplies && tide.stage) {
+  if (stageApplies && tide.stage && tide.stage !== "estagnada") {
     detail +=
       preference.stages.includes(tide.stage)
         ? ` A maré está ${tideStageLabel(tide.stage)}, que é o estágio que costuma funcionar melhor aqui.`
@@ -619,7 +619,7 @@ function limiterCap(factors: readonly ScoreFactor[]): {
   factor: ScoreFactor | null;
 } {
   const slope = (LIMITER_CAP.ceiling - LIMITER_CAP.floor) / LIMITER_CAP.neutralScore;
-  let cap = LIMITER_CAP.ceiling;
+  let cap: number = LIMITER_CAP.ceiling;
   let factor: ScoreFactor | null = null;
 
   for (const f of factors) {

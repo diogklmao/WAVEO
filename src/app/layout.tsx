@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteSidebar } from "@/components/layout/SiteSidebar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -36,8 +37,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#01050d",
-  colorScheme: "dark",
+  themeColor: "#fdf7ec",
+  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
 };
@@ -55,9 +56,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <div className="flex min-h-dvh flex-col">
           <SiteHeader />
-          <main id="conteudo" className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-            {children}
-          </main>
+          <div className="flex flex-1">
+            <SiteSidebar />
+            <main
+              id="conteudo"
+              className="mx-auto w-full min-w-0 max-w-[1600px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8"
+            >
+              {children}
+            </main>
+          </div>
           <SiteFooter />
         </div>
       </body>

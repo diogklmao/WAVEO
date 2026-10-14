@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#412a5e"/>
+      <stop offset="0.32" stop-color="#8c4470"/>
+      <stop offset="0.58" stop-color="#d96e63"/>
+      <stop offset="0.8" stop-color="#f2955c"/>
+      <stop offset="1" stop-color="#ffd9a0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.74" cy="0.62" r="0.5">
+      <stop offset="0" stop-color="#ffe9b8" stop-opacity="0.95"/>
+      <stop offset="0.32" stop-color="#ffb264" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ffb264" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8916a"/>
+      <stop offset="0.14" stop-color="#9c5570"/>
+      <stop offset="0.45" stop-color="#3c3763"/>
+      <stop offset="0.8" stop-color="#1c2a4e"/>
+      <stop offset="1" stop-color="#12203c"/>
+    </linearGradient>
+    <linearGradient id="foam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffe9d2" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#ffe9d2" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#ffe9d2" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- céu de pôr do sol -->
+  <rect width="1920" height="620" fill="url(#sky)"/>
+  <circle cx="1420" cy="640" r="620" fill="url(#glow)"/>
+
+  <!-- nuvens quentes -->
+  <g fill="#ffb27a" opacity="0.55">
+    <rect x="700" y="180" width="520" height="12" rx="6"/>
+    <rect x="880" y="238" width="700" height="10" rx="5"/>
+    <rect x="1180" y="140" width="420" height="11" rx="5.5" opacity="0.8"/>
+    <rect x="320" y="262" width="380" height="9" rx="4.5" opacity="0.6"/>
+    <rect x="1240" y="300" width="560" height="12" rx="6" opacity="0.7"/>
+    <rect x="180" y="120" width="300" height="8" rx="4" opacity="0.45"/>
+  </g>
+
+  <!-- sol baixo junto ao horizonte -->
+  <circle cx="1420" cy="628" r="58" fill="#ffe9b8"/>
+  <circle cx="1420" cy="628" r="42" fill="#fff3d6"/>
+
+  <!-- mar -->
+  <rect y="600" width="1920" height="480" fill="url(#sea)"/>
+
+  <!-- caminho de luz do sol na água -->
+  <g fill="#ffcf96">
+    <rect x="1370" y="612" width="104" height="28" rx="13" opacity="0.7"/>
+    <rect x="1342" y="652" width="160" height="22" rx="11" opacity="0.5"/>
+    <rect x="1308" y="698" width="228" height="19" rx="9.5" opacity="0.34"/>
+    <rect x="1258" y="752" width="328" height="16" rx="8" opacity="0.22"/>
+    <rect x="1192" y="818" width="460" height="13" rx="6.5" opacity="0.14"/>
+    <rect x="1100" y="896" width="640" height="11" rx="5.5" opacity="0.09"/>
+  </g>
+
+  <!-- farol e arribas à direita -->
+  <path d="M1920 620 L1770 604 L1706 560 L1642 596 L1600 640 L1600 720 L1920 720 Z" fill="#2a1c33" opacity="0.9"/>
+  <rect x="1668" y="512" width="16" height="66" rx="6" fill="#241628"/>
+  <rect x="1664" y="500" width="24" height="16" rx="5" fill="#ffd9a0"/>
+  <path d="M1676 486 L1684 502 L1668 502 Z" fill="#241628"/>
+  <g fill="#2a1c33" opacity="0.85">
+    <rect x="1560" y="596" width="26" height="26" rx="4"/>
+    <rect x="1522" y="612" width="22" height="20" rx="4"/>
+    <rect x="1488" y="622" width="18" height="16" rx="3"/>
+  </g>
+
+  <!-- surfistas na água -->
+  <g fill="#101a30" opacity="0.75">
+    <rect x="740" y="712" width="4" height="16" rx="2"/>
+    <rect x="822" y="726" width="4" height="15" rx="2"/>
+    <rect x="905" y="716" width="4" height="14" rx="2"/>
+  </g>
+
+  <!-- cristas de onda -->
+  <g fill="url(#foam)">
+    <rect x="380" y="672" width="520" height="13" rx="6.5" opacity="0.5"/>
+    <rect x="880" y="742" width="700" height="16" rx="8" opacity="0.45"/>
+    <rect x="180" y="812" width="820" height="19" rx="9.5" opacity="0.5"/>
+    <rect x="640" y="890" width="1020" height="22" rx="11" opacity="0.55"/>
+    <rect x="120" y="968" width="1240" height="26" rx="13" opacity="0.6"/>
+  </g>
+
+  <!-- espuma de margem -->
+  <path d="M0 1010 Q 480 980 960 1012 T 1920 1004 L 1920 1022 Q 1440 1032 960 1022 T 0 1026 Z" fill="#ffe9d2" opacity="0.55"/>
+
+  <!-- folhagem de palmeira no topo à esquerda -->
+  <g fill="#16281f">
+    <path d="M0 0 L230 0 Q 176 58 96 74 Q 40 84 0 60 Z" opacity="0.92"/>
+    <path d="M0 0 L140 130 Q 84 112 40 76 Q 14 52 0 22 Z" opacity="0.88"/>
+    <path d="M60 0 Q 130 42 226 62 Q 150 78 78 58 Q 40 44 22 24 Z" opacity="0.8"/>
+    <path d="M0 96 Q 66 122 156 168 Q 82 158 30 130 Q 8 116 0 108 Z" opacity="0.7"/>
+    <path d="M270 0 Q 320 36 356 84 Q 300 62 262 34 Q 248 18 244 4 Z" opacity="0.75"/>
+  </g>
+
+  <!-- folhagem de palmeira no topo à direita -->
+  <g fill="#16281f" opacity="0.8">
+    <path d="M1920 0 L1700 0 Q 1758 52 1836 68 Q 1888 78 1920 56 Z"/>
+    <path d="M1920 0 L1806 120 Q 1856 100 1898 66 Q 1916 44 1920 18 Z"/>
+    <path d="M1852 0 Q 1792 38 1712 60 Q 1782 74 1848 54 Q 1882 40 1898 22 Z" opacity="0.85"/>
+  </g>
+</svg>

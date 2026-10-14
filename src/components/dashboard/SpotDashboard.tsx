@@ -22,12 +22,12 @@ import { CurrentConditions } from "@/components/dashboard/CurrentConditions";
 import { DailyForecast } from "@/components/dashboard/DailyForecast";
 import { FactorBreakdown, ScoreHighlights } from "@/components/dashboard/FactorBreakdown";
 import { TidePanel } from "@/components/dashboard/TidePanel";
-import { IconAlert, IconArrowRight, IconClock, IconMapPin, IconWave } from "@/components/icons";
+import { IconAlert, IconArrowRight, IconEye, IconMapPin, IconWave } from "@/components/icons";
 import { DataStatusBanner, MethodologyNotice } from "@/components/layout/DataStatusBanner";
-import { PageIntro } from "@/components/layout/PageIntro";
+import { SpotHero } from "@/components/dashboard/SpotHero";
 import { SpotTabs } from "@/components/layout/SpotTabs";
 import { FavouriteButton } from "@/components/spots/FavouriteButton";
-import { ScoreDial } from "@/components/ui/ScoreDial";
+import { ConfidenceMeter, ScoreDial } from "@/components/ui/ScoreDial";
 import { ScoreBadge, SectionHeader, Surface, cx } from "@/components/ui/Surface";
 import {
   bottomLabel,
@@ -38,6 +38,7 @@ import {
   scoreBandLabel,
   surferLevelLabel,
 } from "@/lib/format";
+import { RAIL_IMAGE } from "@/lib/spot-media";
 import { relativeDayLabel } from "@/lib/time";
 import type { SpotForecast, SpotSummary, SurfSpot } from "@/lib/types";
 
@@ -52,12 +53,12 @@ export function SpotDashboard({
   forecast: SpotForecast;
   nowEpochMs: number;
   allSummaries: SpotSummary[];
-  spots: SurfSpot[];
+  spots: readonly SurfSpot[];
   /** Mantém o seletor dentro do URL em que o utilizador está. */
   linkMode?: "query" | "path";
   showComparison?: boolean;
 }) {
-  const { spot, current, score, tide, tideExtremes, bestWindow, bestWindow24h, daily, hours, scored, source } =
+  const { spot, current, score, tide, tideExtremes, bestWindow, daily, hours, scored, source } =
     forecast;
   const { characteristics } = spot;
 
@@ -72,27 +73,30 @@ export function SpotDashboard({
     <div className="flex flex-col gap-8">
       <SpotTabs spots={spots} activeSlug={spot.slug} linkMode={linkMode} scores={scoresBySlug} />
 
-      <PageIntro
+      <SpotHero
         eyebrow={`${spot.municipality} · ${spot.region}`}
         title={spot.name}
         description={characteristics.summary}
-        action={<FavouriteButton slug={spot.slug} spotName={spot.name} variant="labelled" />}
       >
         <div className="flex flex-wrap items-center gap-2">
-          <span className="chip">
+          <span className="chip chip-onphoto">
             <IconMapPin size={12} />
-            {spot.lat.toFixed(4)}°N · {Math.abs(spot.lon).toFixed(4)}°O
+            {spot.lat.toFixed(4)}°N - {Math.abs(spot.lon).toFixed(4)}°O
           </span>
-          <span className="chip">{breakTypeLabel(characteristics.breakType)}</span>
-          <span className="chip">{bottomLabel(characteristics.bottom)}</span>
+          <span className="chip chip-onphoto">
+            {breakTypeLabel(characteristics.breakType)}
+          </span>
+          <span className="chip chip-onphoto">{bottomLabel(characteristics.bottom)}</span>
           {characteristics.levels.map((level) => (
-            <span key={level} className="chip">
+            <span key={level} className="chip chip-onphoto">
               {surferLevelLabel(level)}
             </span>
           ))}
         </div>
-      </PageIntro>
+      </SpotHero>
 
+      <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_15rem]">
+        <div className="flex min-w-0 flex-col gap-5">
       <DataStatusBanner source={source} />
 
       {/* ---------------------------------------------------------------- */}
@@ -100,58 +104,66 @@ export function SpotDashboard({
       {/* ---------------------------------------------------------------- */}
       <section aria-labelledby="agora" className="grid gap-5 xl:grid-cols-[24rem_minmax(0,1fr)]">
         <Surface accent className="flex flex-col items-center gap-5 p-6">
-          <h2 id="agora" className="label-eyebrow self-start">
-            Pontuação de surf
+          <h2 id="agora" className="flex items-center gap-2 self-start text-sm font-semibold text-mist-100">
+            <span className="grid size-8 place-items-center rounded-xl bg-tide-500/25 text-tide-100">
+              <IconWave size={15} />
+            </span>
+            Pontuação de Surf
           </h2>
 
-          <ScoreDial score={score.value} band={score.band} confidence={score.confidence} />
+          <ScoreDial score={score.value} band={score.band} size={200} thickness={14} />
 
-          <p className="text-center text-sm leading-relaxed text-mist-300">{score.summary}</p>
-
-          {bestWindow ? (
-            <div className="w-full rounded-[var(--radius-tile)] border border-tide-500/30 bg-tide-600/10 p-3.5">
-              <p className="flex items-center gap-1.5 text-[0.625rem] font-semibold tracking-[0.1em] text-tide-200 uppercase">
-                <IconClock size={12} />
-                Melhor janela
-              </p>
-              <p className="font-display mt-1.5 text-base font-semibold text-mist-50">
-                {bestWindow.headline}
-              </p>
-              <p className="mt-1 text-xs text-mist-400">
-                {bestWindow.hours} h · média {formatScore(bestWindow.averageScore)}/10 · pico{" "}
-                {formatScore(bestWindow.peakScore)}/10
-              </p>
-            </div>
-          ) : (
-            <div className="w-full rounded-[var(--radius-tile)] border border-abyss-500/50 bg-abyss-800/50 p-3.5">
-              <p className="text-[0.625rem] font-semibold tracking-[0.1em] text-mist-500 uppercase">
-                Melhor janela
-              </p>
-              <p className="mt-1.5 text-sm leading-relaxed text-mist-400">
-                Nenhuma janela atinge o mínimo de qualidade nas próximas{" "}
-                {Math.round((hours.length || 72) / 24)} horas. Pode haver alturas
-                isoladas acima da média — consulte a faixa horária abaixo.
-              </p>
-            </div>
-          )}
-
-          {bestWindow24h && bestWindow && bestWindow24h.startEpochMs !== bestWindow.startEpochMs ? (
-            <p className="w-full text-center text-[0.6875rem] text-mist-500">
-              Nas próximas 24 h: {bestWindow24h.headline}
-            </p>
-          ) : null}
+          <div className="w-full border-t border-abyss-500/40 pt-4">
+            <ConfidenceMeter confidence={score.confidence} />
+          </div>
         </Surface>
+
+
 
         <Surface className="p-5 sm:p-6">
-          <SectionHeader
-            eyebrow="Observado agora"
-            title="Condições atuais"
-            description="Valores da hora em curso, na hora local de Portugal continental."
-            className="mb-5"
-          />
-          <CurrentConditions spot={spot} current={current} tide={tide} />
+          <div className="mb-5">
+            <p className="flex items-center gap-2 text-sm font-semibold text-mist-100">
+              <span className="grid size-8 place-items-center rounded-xl bg-tide-500/25 text-tide-100">
+                <IconEye size={15} />
+              </span>
+              Observado agora
+            </p>
+            <h2 className="font-display mt-2 text-xl font-semibold tracking-tight text-mist-50">
+              Condições atuais
+            </h2>
+            <p className="mt-1.5 text-sm leading-relaxed text-mist-300">
+              Valores da hora em curso, na hora local de Portugal continental.
+            </p>
+          </div>
+          <CurrentConditions spot={spot} current={current} />
         </Surface>
       </section>
+        </div>
+
+        {/* Rail direito: fotografia de praia + guardar spot */}
+        <aside className="flex flex-col gap-4">
+          <div
+            className="relative h-[26rem] overflow-hidden rounded-[var(--radius-card)] border border-white/25 shadow-[0_18px_40px_-24px_rgba(10,16,36,0.6)]"
+            style={{
+              backgroundImage: `url(${RAIL_IMAGE})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <p className="font-script absolute top-5 left-5 text-lg leading-snug text-white drop-shadow-[0_1px_6px_rgba(10,16,36,0.7)]">
+              Life is better
+              <br />
+              near the ocean
+            </p>
+          </div>
+          <FavouriteButton
+            slug={spot.slug}
+            spotName={spot.name}
+            variant="labelled"
+            className="self-end"
+          />
+        </aside>
+      </div>
 
       {/* ---------------------------------------------------------------- */}
       {/* 3. O que está a limitar?                                          */}
@@ -232,7 +244,7 @@ export function SpotDashboard({
           <SectionHeader
             eyebrow="Maré"
             title="Nível do mar"
-            description="PM = preia-mar, BM = baixa-mar. Derivado da série do fornecedor."
+            description="MA = maré alta, MB = maré baixa. Derivado da série do fornecedor."
             className="mb-4"
           />
           <TideChart hours={hours} nowEpochMs={nowEpochMs} extremes={tideExtremes} />

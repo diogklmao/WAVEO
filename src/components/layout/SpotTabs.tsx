@@ -1,16 +1,18 @@
 /**
  * WAVEO — seletor de spots.
  *
- * São ligações a sério, e não um componente com estado: funciona sem
- * JavaScript, é indexável, e cada spot tem um URL próprio que pode ser
- * partilhado. O ponto colorido dá a pontuação atual de cada praia, para que a
- * comparação entre spots — uma das três perguntas que a WAVEO responde — se
- * faça sem abrir cada um.
+ * Uma faixa horizontal de cartões, um por praia, com a miniatura, o nome, a
+ * região e a pontuação atual — a comparação entre spots, uma das três perguntas
+ * que a WAVEO responde, faz-se sem abrir cada um. São ligações a sério, e não
+ * um componente com estado: funcionam sem JavaScript, são indexáveis, e cada
+ * spot tem um URL próprio que pode ser partilhado.
  */
 
 import Link from "next/link";
+import { IconArrowRight, IconWave } from "@/components/icons";
 import { cx } from "@/components/ui/Surface";
 import { scoreColor, formatScore } from "@/lib/format";
+import { spotThumb } from "@/lib/spot-media";
 import type { ScoreBand, SurfSpot } from "@/lib/types";
 
 export function SpotTabs({
@@ -20,7 +22,7 @@ export function SpotTabs({
   scores,
   className,
 }: {
-  spots: SurfSpot[];
+  spots: readonly SurfSpot[];
   activeSlug: string;
   /** `query` gera `/?spot=slug`; `path` gera `/spots/slug`. */
   linkMode?: "query" | "path";
@@ -32,7 +34,7 @@ export function SpotTabs({
 
   return (
     <nav aria-label="Escolher spot" className={className}>
-      <ul className="no-scrollbar -mx-1 flex snap-x gap-2 overflow-x-auto px-1 py-1">
+      <ul className="no-scrollbar -mx-1 flex snap-x gap-3 overflow-x-auto px-1 py-1">
         {spots.map((spot) => {
           const active = spot.slug === activeSlug;
           const score = scores?.[spot.slug];
@@ -45,36 +47,38 @@ export function SpotTabs({
                 href={hrefFor(spot.slug)}
                 aria-current={active ? "page" : undefined}
                 className={cx(
-                  "flex items-center gap-2.5 rounded-xl border px-3 py-2 transition-colors",
+                  "flex w-56 items-center gap-3 rounded-2xl border p-2.5 transition-colors backdrop-blur-md",
                   active
-                    ? "border-tide-400/60 bg-tide-600/15"
-                    : "border-abyss-500/50 bg-abyss-800/40 hover:border-abyss-400/70 hover:bg-abyss-700/50",
+                    ? "border-white/60 bg-white/55 shadow-[0_6px_18px_rgba(10,20,40,0.35)]"
+                    : "border-white/25 bg-white/22 hover:border-white/45 hover:bg-white/32",
                 )}
               >
                 <span
                   aria-hidden="true"
-                  className="size-2.5 shrink-0 rounded-full"
-                  style={{ backgroundColor: colour }}
+                  className="size-12 shrink-0 rounded-full border-2 border-white/70 bg-cover bg-center shadow-sm"
+                  style={{ backgroundImage: `url(${spotThumb(spot.slug)})` }}
                 />
-                <span className="flex flex-col leading-tight">
+                <span className="min-w-0 flex-1">
                   <span
                     className={cx(
-                      "text-sm font-semibold whitespace-nowrap",
-                      active ? "text-tide-100" : "text-mist-100",
+                      "block truncate text-sm font-semibold whitespace-nowrap",
+                      active ? "text-mist-50" : "text-white",
                     )}
                   >
                     {spot.name}
                   </span>
-                  <span className="text-[0.625rem] tracking-wide text-mist-500 uppercase">
+                  <span className="mt-0.5 block truncate text-[0.5625rem] tracking-[0.08em] text-white/70 uppercase">
                     {spot.region}
                   </span>
+                  <span
+                    className="mt-1 flex items-center gap-1 text-xs font-semibold tabular-nums"
+                    style={{ color: active ? colour : "rgba(255,255,255,0.95)" }}
+                  >
+                    <IconWave size={12} />
+                    {unavailable ? "—" : formatScore(score.value)}
+                  </span>
                 </span>
-                <span
-                  className="ml-1 font-mono text-xs font-semibold tabular-nums"
-                  style={{ color: colour }}
-                >
-                  {unavailable ? "—" : formatScore(score.value)}
-                </span>
+                <IconArrowRight size={14} className="shrink-0 text-white/70" />
               </Link>
             </li>
           );

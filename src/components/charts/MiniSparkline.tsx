@@ -59,7 +59,7 @@ export function MiniSparkline({
   });
   if (current.length > 0) runs.push(current.join(" "));
 
-  const lastUsableIndex = values.reduce(
+  const lastUsableIndex = values.reduce<number>(
     (acc, value, index) => (value !== null && Number.isFinite(value) ? index : acc),
     0,
   );

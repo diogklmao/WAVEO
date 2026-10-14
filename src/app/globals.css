@@ -2,52 +2,54 @@
 
 /* =============================================================================
    WAVEO — Sistema de design
-   Paleta: azul-marinho profundo, azul-oceano e acentos turquesa/ciano.
+   Paleta: praia e verão — areia quente, céu aberto, mar turquesa e sol.
    Os tokens abaixo geram automaticamente utilitários Tailwind
    (ex.: --color-abyss-900 -> bg-abyss-900, text-abyss-900, border-abyss-900).
+   A hierarquia mantém-se: abyss = fundos (areia), mist = tinta (texto),
+   tide/foam = acentos (mar), signal = estados.
    ============================================================================= */
 
 @theme {
-  /* --- Profundezas (fundos) ------------------------------------------------ */
-  --color-abyss-950: #01050d;
-  --color-abyss-900: #040b18;
-  --color-abyss-850: #061124;
-  --color-abyss-800: #08182f;
-  --color-abyss-750: #0b1f3b;
-  --color-abyss-700: #102846;
-  --color-abyss-600: #173553;
-  --color-abyss-500: #1f4462;
-  --color-abyss-400: #2b5878;
+  /* --- Areia (fundos, do mais claro ao mais fundo) ------------------------- */
+  --color-abyss-950: #fdf7ec;
+  --color-abyss-900: #f9efdd;
+  --color-abyss-850: #f4e7cf;
+  --color-abyss-800: #f0dfc1;
+  --color-abyss-750: #ead5b3;
+  --color-abyss-700: #e2c9a2;
+  --color-abyss-600: #d2b489;
+  --color-abyss-500: #bfa07a;
+  --color-abyss-400: #a98a63;
 
-  /* --- Maré (acento principal — ciano) ------------------------------------ */
-  --color-tide-600: #0891b2;
-  --color-tide-500: #06b6d4;
-  --color-tide-400: #22d3ee;
-  --color-tide-300: #67e8f9;
-  --color-tide-200: #a5f3fc;
-  --color-tide-100: #cffafe;
+  /* --- Maré (acento principal — turquesa de mar) -------------------------- */
+  --color-tide-600: #97e0ec;
+  --color-tide-500: #63ccdd;
+  --color-tide-400: #2fb2c9;
+  --color-tide-300: #0e8fa8;
+  --color-tide-200: #0b7b92;
+  --color-tide-100: #0a6478;
 
-  /* --- Espuma (acento secundário — turquesa) ------------------------------ */
-  --color-foam-600: #0d9488;
-  --color-foam-500: #14b8a6;
-  --color-foam-400: #2dd4bf;
-  --color-foam-300: #5eead4;
+  /* --- Espuma (acento secundário — verde-mar) ----------------------------- */
+  --color-foam-600: #45c0a6;
+  --color-foam-500: #2aa88f;
+  --color-foam-400: #14907a;
+  --color-foam-300: #0e7c63;
 
-  /* --- Névoa (tipografia) -------------------------------------------------- */
-  --color-mist-50: #f6fbff;
-  --color-mist-100: #e8f3ff;
-  --color-mist-200: #cfe2f5;
-  --color-mist-300: #a9c6e0;
-  --color-mist-400: #7d9cba;
-  --color-mist-500: #5b7793;
-  --color-mist-600: #41586f;
+  /* --- Tinta (tipografia, do mais escuro ao mais leve) -------------------- */
+  --color-mist-50: #102f42;
+  --color-mist-100: #1b3e52;
+  --color-mist-200: #2a5165;
+  --color-mist-300: #3a6276;
+  --color-mist-400: #4e7488;
+  --color-mist-500: #63879a;
+  --color-mist-600: #86a4b4;
 
-  /* --- Estados ------------------------------------------------------------- */
-  --color-signal-good: #34d399;
-  --color-signal-fair: #a3e635;
-  --color-signal-marginal: #fbbf24;
-  --color-signal-poor: #fb923c;
-  --color-signal-bad: #f43f5e;
+  /* --- Estados (tons de sol e de areia, legíveis sobre creme) ------------- */
+  --color-signal-good: #0e8a62;
+  --color-signal-fair: #65a30d;
+  --color-signal-marginal: #b45309;
+  --color-signal-poor: #c2410c;
+  --color-signal-bad: #be123c;
   --color-signal-unknown: #64748b;
 
   /* --- Tipografia ---------------------------------------------------------- */
@@ -55,15 +57,19 @@
     ui-sans-serif, system-ui, -apple-system, "Segoe UI Variable Text", "Segoe UI",
     Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-display:
-    "Segoe UI Variable Display", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+    ui-rounded, "Segoe UI Rounded", "Trebuchet MS", "Segoe UI Variable Display",
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
   --font-mono:
     ui-monospace, "Cascadia Mono", "SFMono-Regular", "Segoe UI Mono", Menlo,
     Consolas, monospace;
+  /* Manuscrita — para a marca e as frases de praia. */
+  --font-script:
+    "Segoe Print", "Bradley Hand", "Ink Free", "Comic Sans MS", cursive;
 
-  /* --- Raios --------------------------------------------------------------- */
-  --radius-card: 1.25rem;
-  --radius-tile: 1rem;
+  /* --- Raios (cantos suaves, ar descontraído) ------------------------------ */
+  --radius-card: 1.5rem;
+  --radius-tile: 1.125rem;
 
   /* --- Animações ----------------------------------------------------------- */
   --animate-rise: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -128,7 +134,7 @@
 
 @layer base {
   * {
-    border-color: color-mix(in oklab, var(--color-abyss-600) 55%, transparent);
+    border-color: color-mix(in oklab, var(--color-abyss-500) 45%, transparent);
   }
 
   html {
@@ -147,7 +153,8 @@
     min-height: 100dvh;
   }
 
-  /* Fundo oceânico: gradientes radiais muito subtis sobre o azul profundo. */
+  /* Fundo de praia: fotografia de pôr do sol cobre a página inteira, com um
+     véu suave para o texto e os cartões de vidro assentarem bem. */
   body::before {
     content: "";
     position: fixed;
@@ -155,31 +162,24 @@
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(
-        120% 80% at 12% -10%,
-        color-mix(in oklab, var(--color-tide-600) 22%, transparent) 0%,
-        transparent 55%
+      linear-gradient(
+        180deg,
+        color-mix(in oklab, #241a4d 18%, transparent) 0%,
+        transparent 30%,
+        transparent 70%,
+        color-mix(in oklab, #12203c 22%, transparent) 100%
       ),
-      radial-gradient(
-        100% 70% at 92% 4%,
-        color-mix(in oklab, var(--color-foam-600) 14%, transparent) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        140% 100% at 50% 115%,
-        color-mix(in oklab, var(--color-abyss-600) 60%, transparent) 0%,
-        transparent 60%
-      ),
-      linear-gradient(180deg, var(--color-abyss-900) 0%, var(--color-abyss-950) 100%);
+      url("/img/page-bg.svg") center / cover no-repeat fixed,
+      linear-gradient(180deg, #8c4470 0%, #3c2c60 100%);
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-tide-400) 35%, transparent);
+    background: color-mix(in oklab, var(--color-tide-400) 32%, transparent);
     color: var(--color-mist-50);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-tide-400);
+    outline: 2px solid var(--color-tide-300);
     outline-offset: 2px;
     border-radius: 0.5rem;
   }
@@ -222,28 +222,45 @@
   .surface {
     background: linear-gradient(
       160deg,
-      color-mix(in oklab, var(--color-abyss-800) 78%, transparent) 0%,
-      color-mix(in oklab, var(--color-abyss-900) 88%, transparent) 100%
+      color-mix(in oklab, #ffffff 62%, transparent) 0%,
+      color-mix(in oklab, #eef4f8 48%, transparent) 100%
     );
-    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 50%, transparent);
+    border: 1px solid color-mix(in oklab, #ffffff 55%, transparent);
     border-radius: var(--radius-card);
-    backdrop-filter: blur(14px) saturate(130%);
-    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    backdrop-filter: blur(18px) saturate(125%);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
     box-shadow:
-      0 1px 0 0 color-mix(in oklab, var(--color-mist-100) 6%, transparent) inset,
-      0 18px 40px -24px rgb(0 0 0 / 0.85);
+      0 1px 0 0 color-mix(in oklab, #ffffff 80%, transparent) inset,
+      0 18px 40px -24px rgb(20 24 48 / 0.45);
+  }
+
+  /* Vidro escuro — banner de dados, mosaicos de leitura e rail lateral. */
+  .surface-dark {
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklab, #1d2a4d 55%, transparent) 0%,
+      color-mix(in oklab, #12203c 62%, transparent) 100%
+    );
+    border: 1px solid color-mix(in oklab, #ffffff 22%, transparent);
+    border-radius: var(--radius-card);
+    backdrop-filter: blur(16px) saturate(125%);
+    -webkit-backdrop-filter: blur(16px) saturate(125%);
+    box-shadow:
+      0 1px 0 0 color-mix(in oklab, #ffffff 18%, transparent) inset,
+      0 18px 40px -24px rgb(10 14 32 / 0.6);
   }
 
   .surface-raised {
     background: linear-gradient(
       150deg,
-      color-mix(in oklab, var(--color-abyss-750) 82%, transparent) 0%,
-      color-mix(in oklab, var(--color-abyss-850) 90%, transparent) 100%
+      color-mix(in oklab, #ffffff 58%, transparent) 0%,
+      color-mix(in oklab, #eaf1f6 45%, transparent) 100%
     );
-    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 60%, transparent);
+    border: 1px solid color-mix(in oklab, #ffffff 50%, transparent);
     border-radius: var(--radius-tile);
-    backdrop-filter: blur(12px) saturate(130%);
-    -webkit-backdrop-filter: blur(12px) saturate(130%);
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    box-shadow: 0 1px 0 0 color-mix(in oklab, #ffffff 70%, transparent) inset;
   }
 
   .surface-interactive {
@@ -253,26 +270,29 @@
       box-shadow 200ms ease;
   }
   .surface-interactive:hover {
-    border-color: color-mix(in oklab, var(--color-tide-500) 55%, transparent);
+    border-color: color-mix(in oklab, var(--color-tide-400) 60%, transparent);
     transform: translateY(-2px);
     box-shadow:
-      0 1px 0 0 color-mix(in oklab, var(--color-mist-100) 8%, transparent) inset,
-      0 24px 48px -28px color-mix(in oklab, var(--color-tide-500) 45%, transparent);
+      0 1px 0 0 color-mix(in oklab, #ffffff 85%, transparent) inset,
+      0 24px 48px -30px color-mix(in oklab, var(--color-tide-300) 55%, transparent);
   }
 
-  /* Realce turquesa no topo de um cartão em destaque. */
+  /* Realce de sol nascente no topo de um cartão em destaque. */
   .surface-accent::before {
     content: "";
     position: absolute;
     inset-inline: 1.25rem;
     top: 0;
-    height: 1px;
+    height: 3px;
+    border-radius: 999px;
     background: linear-gradient(
       90deg,
       transparent,
-      color-mix(in oklab, var(--color-tide-400) 75%, transparent),
+      #ffbe5c 25%,
+      var(--color-tide-400) 75%,
       transparent
     );
+    opacity: 0.85;
   }
 
   /* --- Etiquetas ----------------------------------------------------------- */
@@ -282,21 +302,30 @@
     align-items: center;
     gap: 0.375rem;
     border-radius: 999px;
-    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 65%, transparent);
-    background: color-mix(in oklab, var(--color-abyss-800) 70%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 55%, transparent);
+    background: color-mix(in oklab, #fffdf8 72%, transparent);
     padding: 0.25rem 0.625rem;
     font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--color-mist-300);
+    color: var(--color-mist-200);
     white-space: nowrap;
   }
 
+  /* Chip sobre fotografia — vidro escuro com texto branco. */
+  .chip-onphoto {
+    border: 1px solid color-mix(in oklab, #ffffff 32%, transparent);
+    background: color-mix(in oklab, #102038 42%, transparent);
+    color: #fffdf8;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
   .chip-tide {
-    border-color: color-mix(in oklab, var(--color-tide-500) 45%, transparent);
-    background: color-mix(in oklab, var(--color-tide-600) 18%, transparent);
-    color: var(--color-tide-200);
+    border-color: color-mix(in oklab, var(--color-tide-400) 50%, transparent);
+    background: color-mix(in oklab, var(--color-tide-600) 32%, transparent);
+    color: var(--color-tide-100);
   }
 
   /* --- Texto --------------------------------------------------------------- */
@@ -304,9 +333,9 @@
   .label-eyebrow {
     font-size: 0.6875rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-mist-500);
+    color: var(--color-mist-400);
   }
 
   .text-gradient-tide {
@@ -314,11 +343,17 @@
       100deg,
       var(--color-mist-50) 0%,
       var(--color-tide-200) 55%,
-      var(--color-foam-300) 100%
+      var(--color-foam-400) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  /* Traço manuscrito que acompanha as frases de praia. */
+  .flourish {
+    display: inline-block;
+    color: color-mix(in oklab, currentColor 75%, transparent);
   }
 
   /* --- Esqueletos de carregamento ----------------------------------------- */
@@ -341,10 +376,10 @@
     background:
       repeating-linear-gradient(
         135deg,
-        color-mix(in oklab, var(--color-signal-marginal) 12%, transparent) 0 12px,
+        color-mix(in oklab, var(--color-signal-marginal) 14%, transparent) 0 12px,
         transparent 12px 24px
       ),
-      color-mix(in oklab, var(--color-abyss-800) 92%, transparent);
+      color-mix(in oklab, var(--color-abyss-900) 92%, transparent);
     border-bottom: 1px solid
       color-mix(in oklab, var(--color-signal-marginal) 45%, transparent);
     color: var(--color-signal-marginal);
@@ -363,10 +398,10 @@
     font-variant-numeric: tabular-nums;
     color: var(--color-abyss-950);
     cursor: pointer;
-    border: 2px solid color-mix(in oklab, var(--color-abyss-950) 65%, transparent);
+    border: 2px solid color-mix(in oklab, #fffdf8 80%, transparent);
     box-shadow:
-      0 0 0 2px color-mix(in oklab, currentColor 45%, transparent),
-      0 10px 24px -10px rgb(0 0 0 / 0.9);
+      0 0 0 2px color-mix(in oklab, currentColor 35%, transparent),
+      0 10px 24px -10px color-mix(in oklab, var(--color-abyss-400) 70%, transparent);
     transition:
       transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
       box-shadow 180ms ease;
@@ -381,8 +416,8 @@
   }
   .map-marker-group[data-selected="true"] .map-marker {
     box-shadow:
-      0 0 0 3px var(--color-mist-50),
-      0 12px 28px -10px rgb(0 0 0 / 0.9);
+      0 0 0 3px var(--color-tide-100),
+      0 12px 28px -10px color-mix(in oklab, var(--color-abyss-400) 70%, transparent);
   }
 
   /* Agrupamento marcador + nome, usado no mapa interativo. */
@@ -400,8 +435,8 @@
   .map-marker-name {
     padding: 0.125rem 0.4375rem;
     border-radius: 999px;
-    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 55%, transparent);
-    background: color-mix(in oklab, var(--color-abyss-950) 82%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 50%, transparent);
+    background: color-mix(in oklab, #fffdf8 85%, transparent);
     font-size: 0.625rem;
     font-weight: 600;
     letter-spacing: 0.03em;
@@ -412,22 +447,22 @@
   }
 
   .map-marker-group[data-selected="true"] .map-marker-name {
-    border-color: color-mix(in oklab, var(--color-tide-400) 70%, transparent);
+    border-color: color-mix(in oklab, var(--color-tide-300) 75%, transparent);
     color: var(--color-tide-100);
   }
 
   .maplibregl-popup-content {
-    background: color-mix(in oklab, var(--color-abyss-850) 96%, transparent) !important;
-    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 70%, transparent) !important;
+    background: color-mix(in oklab, #fffdf8 96%, transparent) !important;
+    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 60%, transparent) !important;
     border-radius: var(--radius-tile) !important;
     padding: 0.875rem 1rem !important;
     color: var(--color-mist-100) !important;
     backdrop-filter: blur(14px);
-    box-shadow: 0 20px 44px -20px rgb(0 0 0 / 0.9) !important;
+    box-shadow: 0 20px 44px -22px color-mix(in oklab, var(--color-abyss-400) 65%, transparent) !important;
   }
   .maplibregl-popup-tip {
-    border-top-color: color-mix(in oklab, var(--color-abyss-850) 96%, transparent) !important;
-    border-bottom-color: color-mix(in oklab, var(--color-abyss-850) 96%, transparent) !important;
+    border-top-color: color-mix(in oklab, #fffdf8 96%, transparent) !important;
+    border-bottom-color: color-mix(in oklab, #fffdf8 96%, transparent) !important;
   }
   .maplibregl-popup-close-button {
     color: var(--color-mist-400) !important;
@@ -435,21 +470,21 @@
     padding: 0.25rem 0.5rem !important;
   }
   .maplibregl-ctrl-attrib {
-    background: color-mix(in oklab, var(--color-abyss-900) 82%, transparent) !important;
+    background: color-mix(in oklab, var(--color-abyss-950) 85%, transparent) !important;
     border-radius: 0.5rem 0 0 0;
   }
   .maplibregl-ctrl-attrib a {
     color: var(--color-mist-400) !important;
   }
   .maplibregl-ctrl-group {
-    background: color-mix(in oklab, var(--color-abyss-850) 92%, transparent) !important;
-    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 60%, transparent) !important;
+    background: color-mix(in oklab, #fffdf8 92%, transparent) !important;
+    border: 1px solid color-mix(in oklab, var(--color-abyss-500) 50%, transparent) !important;
   }
   .maplibregl-ctrl-group button + button {
-    border-top-color: color-mix(in oklab, var(--color-abyss-500) 60%, transparent) !important;
+    border-top-color: color-mix(in oklab, var(--color-abyss-500) 50%, transparent) !important;
   }
   .maplibregl-ctrl-group button span {
-    filter: invert(1) opacity(0.7);
+    opacity: 0.75;
   }
 }
 
@@ -466,7 +501,7 @@
 
 @utility grid-ocean {
   background-image:
-    linear-gradient(color-mix(in oklab, var(--color-abyss-500) 22%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in oklab, var(--color-abyss-500) 22%, transparent) 1px, transparent 1px);
+    linear-gradient(color-mix(in oklab, var(--color-abyss-500) 26%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-abyss-500) 26%, transparent) 1px, transparent 1px);
   background-size: 44px 44px;
 }

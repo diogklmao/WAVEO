@@ -249,6 +249,15 @@ export function IconArrowDown(props: IconProps) {
   );
 }
 
+export function IconSearch(props: IconProps) {
+  return (
+    <Base {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m21 21-4.3-4.3" />
+    </Base>
+  );
+}
+
 export function IconSun(props: IconProps) {
   return (
     <Base {...props}>
@@ -344,6 +353,42 @@ export function IconExternal(props: IconProps) {
       <path d="M14 4h6v6" />
       <path d="M20 4 11 13" />
       <path d="M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10" />
+    </Base>
+  );
+}
+
+export function IconHome(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M4 11.5 12 4l8 7.5" />
+      <path d="M6.2 10.5V20h11.6v-9.5" />
+      <path d="M10 20v-5h4v5" />
+    </Base>
+  );
+}
+
+export function IconUser(props: IconProps) {
+  return (
+    <Base {...props}>
+      <circle cx="12" cy="8" r="3.5" />
+      <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" />
+    </Base>
+  );
+}
+
+export function IconBookmark({ filled = false, ...props }: IconProps & { filled?: boolean }) {
+  return (
+    <Base {...props} fill={filled ? "currentColor" : "none"}>
+      <path d="M7 4h10v16l-5-3.8L7 20z" />
+    </Base>
+  );
+}
+
+export function IconEye(props: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z" />
+      <circle cx="12" cy="12" r="2.8" />
     </Base>
   );
 }

@@ -72,7 +72,7 @@ export function findBestWindow(
 export function findBestHour(
   scored: readonly ScoredHour[],
   nowEpochMs: number,
-  horizonHours = BEST_WINDOW_CONFIG.horizonHours,
+  horizonHours: number = BEST_WINDOW_CONFIG.horizonHours,
 ): ScoredHour | null {
   const limit = nowEpochMs + horizonHours * HOUR_MS;
   const candidates = scored.filter(

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="rs" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5c2e6e"/>
+      <stop offset="0.34" stop-color="#b2546f"/>
+      <stop offset="0.6" stop-color="#e8896b"/>
+      <stop offset="1" stop-color="#f6c084"/>
+    </linearGradient>
+    <radialGradient id="rg" cx="0.66" cy="0.52" r="0.5">
+      <stop offset="0" stop-color="#ffe2b0" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#f9a25f" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rsea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a3587a"/>
+      <stop offset="0.3" stop-color="#3c2c60"/>
+      <stop offset="1" stop-color="#141f3c"/>
+    </linearGradient>
+    <linearGradient id="rboard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7e6c8"/>
+      <stop offset="1" stop-color="#d9a06a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- céu -->
+  <rect width="400" height="470" fill="url(#rs)"/>
+  <circle cx="262" cy="430" r="300" fill="url(#rg)"/>
+
+  <!-- nuvens -->
+  <g fill="#ffc890" opacity="0.5">
+    <rect x="30" y="120" width="220" height="9" rx="4.5"/>
+    <rect x="120" y="168" width="250" height="8" rx="4"/>
+    <rect x="50" y="228" width="170" height="7" rx="3.5" opacity="0.8"/>
+  </g>
+
+  <!-- sol -->
+  <circle cx="262" cy="438" r="34" fill="#ffe9c2"/>
+  <circle cx="262" cy="438" r="24" fill="#fff3d6"/>
+
+  <!-- mar -->
+  <rect y="440" width="400" height="230" fill="url(#rsea)"/>
+  <g fill="#ffcf96">
+    <rect x="232" y="448" width="60" height="16" rx="8" opacity="0.6"/>
+    <rect x="218" y="476" width="88" height="13" rx="6.5" opacity="0.4"/>
+    <rect x="198" y="510" width="128" height="11" rx="5.5" opacity="0.26"/>
+    <rect x="172" y="552" width="180" height="9" rx="4.5" opacity="0.16"/>
+  </g>
+  <g fill="#f3d9c0" opacity="0.5">
+    <rect x="20" y="490" width="140" height="7" rx="3.5"/>
+    <rect x="90" y="546" width="180" height="9" rx="4.5"/>
+    <rect x="10" y="612" width="230" height="11" rx="5.5"/>
+  </g>
+
+  <!-- areia -->
+  <path d="M0 660 Q 200 638 400 664 L 400 800 L 0 800 Z" fill="#e2b877"/>
+  <path d="M0 660 Q 200 638 400 664 L 400 674 Q 200 650 0 672 Z" fill="#f7e6c8" opacity="0.7"/>
+
+  <!-- vedação de madeira -->
+  <g fill="#6b4a2f">
+    <rect x="26" y="620" width="14" height="110" rx="5"/>
+    <rect x="112" y="632" width="13" height="104" rx="5"/>
+    <rect x="198" y="642" width="13" height="98" rx="5"/>
+    <rect x="18" y="654" width="210" height="10" rx="5" opacity="0.9"/>
+  </g>
+
+  <!-- prancha de surf encostada -->
+  <g transform="translate(292 548) rotate(10)">
+    <path d="M34 0 Q 66 66 66 132 Q 66 210 34 248 Q 2 210 2 132 Q 2 66 34 0 Z" fill="url(#rboard)"/>
+    <path d="M34 22 Q 34 132 34 226" stroke="#b97f4e" stroke-width="3" fill="none" opacity="0.7"/>
+    <path d="M34 0 Q 66 66 66 132 Q 66 210 34 248" stroke="#8c5a34" stroke-width="2" fill="none" opacity="0.5"/>
+  </g>
+
+  <!-- folhagem de palmeira no topo -->
+  <g fill="#1c2a1f">
+    <path d="M0 0 L180 0 Q 132 46 66 60 Q 22 68 0 48 Z" opacity="0.92"/>
+    <path d="M0 0 L96 108 Q 52 92 20 62 Q 6 42 0 18 Z" opacity="0.88"/>
+    <path d="M40 0 Q 100 32 178 50 Q 112 62 56 46 Q 28 34 14 18 Z" opacity="0.8"/>
+    <path d="M400 0 L268 0 Q 302 40 356 56 Q 386 64 400 46 Z" opacity="0.85"/>
+    <path d="M400 0 L318 100 Q 356 84 388 56 Q 400 38 400 16 Z" opacity="0.8"/>
+  </g>
+</svg>

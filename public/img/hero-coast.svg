@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2e86c8"/>
+      <stop offset="0.45" stop-color="#63b5e0"/>
+      <stop offset="0.8" stop-color="#a8daf0"/>
+      <stop offset="1" stop-color="#d8f0fa"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.76" cy="0.18" r="0.55">
+      <stop offset="0" stop-color="#fff3c4" stop-opacity="0.95"/>
+      <stop offset="0.35" stop-color="#ffe08a" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ffe08a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b9cc4"/>
+      <stop offset="0.3" stop-color="#17a5bb"/>
+      <stop offset="0.7" stop-color="#2bbfb2"/>
+      <stop offset="1" stop-color="#6fd6c4"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2ddab"/>
+      <stop offset="1" stop-color="#e5c489"/>
+    </linearGradient>
+    <linearGradient id="foam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- céu de verão -->
+  <rect width="1600" height="330" fill="url(#sky)"/>
+  <circle cx="1215" cy="110" r="360" fill="url(#glow)"/>
+
+  <!-- sol alto -->
+  <circle cx="1215" cy="110" r="52" fill="#ffe9a3"/>
+  <circle cx="1215" cy="110" r="40" fill="#fff6d8"/>
+
+  <!-- nuvens brancas e leves -->
+  <g fill="#ffffff" opacity="0.75">
+    <rect x="180" y="96" width="380" height="14" rx="7"/>
+    <rect x="260" y="128" width="520" height="11" rx="5.5"/>
+    <rect x="820" y="70" width="300" height="10" rx="5" opacity="0.8"/>
+    <rect x="960" y="160" width="460" height="12" rx="6" opacity="0.65"/>
+    <rect x="120" y="188" width="340" height="9" rx="4.5" opacity="0.55"/>
+  </g>
+
+  <!-- mar -->
+  <rect y="300" width="1600" height="230" fill="url(#sea)"/>
+
+  <!-- brilho do sol na água -->
+  <g fill="#fff2c9">
+    <rect x="1170" y="304" width="92" height="22" rx="10" opacity="0.7"/>
+    <rect x="1150" y="334" width="132" height="18" rx="9" opacity="0.5"/>
+    <rect x="1124" y="366" width="184" height="15" rx="7.5" opacity="0.32"/>
+    <rect x="1090" y="402" width="252" height="13" rx="6.5" opacity="0.2"/>
+  </g>
+
+  <!-- cristas de onda -->
+  <g fill="url(#foam)">
+    <rect x="300" y="336" width="420" height="11" rx="5.5" opacity="0.55"/>
+    <rect x="760" y="382" width="520" height="13" rx="6.5" opacity="0.45"/>
+    <rect x="180" y="432" width="620" height="15" rx="7.5" opacity="0.5"/>
+    <rect x="840" y="474" width="600" height="17" rx="8.5" opacity="0.55"/>
+  </g>
+
+  <!-- areia -->
+  <path d="M0 500 Q 400 470 800 502 T 1600 496 L 1600 600 L 0 600 Z" fill="url(#sand)"/>
+  <g fill="#ffffff" opacity="0.5">
+    <rect x="120" y="524" width="360" height="9" rx="4.5"/>
+    <rect x="560" y="548" width="520" height="10" rx="5"/>
+    <rect x="1040" y="522" width="420" height="8" rx="4"/>
+  </g>
+
+  <!-- espuma na margem -->
+  <path d="M0 500 Q 400 470 800 502 T 1600 496 L 1600 508 T 800 514 T 0 512 Z" fill="#ffffff" opacity="0.65"/>
+</svg>
